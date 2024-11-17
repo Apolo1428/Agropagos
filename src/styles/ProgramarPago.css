@@ -1,0 +1,40 @@
+.ProgramarPagos{
+   
+    h2{
+        margin-top:10px;
+        margin-bottom:20px;
+    }
+
+    button {
+        margin-right:10px;
+        margin-left:auto;
+        margin-bottom:1rem;
+
+    }
+    h4{
+        font-size: 20px;
+        margin-bottom:10px;
+    }
+    input {
+        padding: 8px;
+        margin-top:10px;
+        margin-bottom:10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        width:100%;
+    }
+    button{
+        margin-top:5px; 
+        width: 104.5%;
+        margin-right:0px;
+    }
+    .right, .left{
+        width: 400px;
+    }
+    .right{
+        line-height: 30px;
+    }
+
+
+
+}

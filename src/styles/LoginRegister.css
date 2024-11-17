@@ -1,0 +1,77 @@
+.login-wrapper, .register-wrapper{
+  background-image: url('../Background.png');
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+
+}
+.login-wrapper {
+  height:700px;
+  justify-items: center;
+}
+
+.login-container, .register-container  {
+    background-color: #fff;
+    padding: 50px 40px 50px 40px;
+    margin-bottom: 2rem;
+    margin-right:2rem;
+    margin-left:8rem;
+    min-width: 288px;
+    h2 {
+      margin-bottom:2rem;
+      text-align: center;
+    }
+    
+    border-top: 3px solid greenyellow;
+    border-right: 3px solid greenyellow;
+    box-shadow: 1px 3px 30px #909090;
+    border-radius: 1rem;
+    label{
+      margin-top: 8px;
+      margin-bottom: 8px;
+    }
+    input {
+      padding: 10px 20px;
+      margin-bottom: 8px;
+      margin-top: 8px;
+      width: 248px;
+    }
+    button {
+      padding: 10px;
+      margin-top:8px;
+      margin-bottom:8px;
+      font-size: 17px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 290px;
+    }
+    
+    button:hover {
+      background-color: #45a049;
+    }
+    p {
+      padding-top: 10px;
+    }
+}
+
+.Mensaje{
+  margin-left:3rem;
+  margin-right:3rem;
+  margin-top:130px;
+  margin-bottom:auto;
+  h2{
+    font-size:46px;
+    text-align: left;
+    padding-bottom:2rem;
+  }
+  p{
+    font-size:22px;
+    margin-bottom:3rem;
+  }
+  
+}

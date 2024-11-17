@@ -1,0 +1,121 @@
+.App {
+  text-align: center;
+  margin-top: 50px;
+  font-family: Arial, sans-serif;
+  background-color: cornflowerblue;
+}
+*{
+  margin: 0;
+  padding: 0;
+}
+#contenedor{
+  width: 100%;
+}
+.flex {
+  display:flex;
+  height: auto;
+}
+
+.formCustom {
+  button, input{
+    margin-top:1rem;
+  }
+
+  input{
+    width: 500px;
+  }
+}
+
+div {
+  display: block;
+  unicode-bidi: isolate;
+}
+body {
+  font-size: 16px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: var(--color_fuscous_gray_approx);
+  padding-top: 0;
+  background: var(--white);
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+button {
+
+  padding: 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+
+}
+
+button:hover {
+  background-color: #45a049;
+}
+input {
+  width: 100%;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.link {
+  color: blue;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.link:hover {
+  color: darkblue;
+}
+
+/* Contenedor principal de la tabla */
+.table-container {
+  display: grid;
+  gap: 8px;
+  width: 100%;
+  margin: 20px auto;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* Encabezado de la tabla */
+.table-header {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  background-color: teal;
+  color: white;
+  font-weight: bold;
+  padding: 10px;
+  text-align: center;
+}
+
+/* Filas de la tabla */
+.table-row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  background-color: #f9f9f9;
+  padding: 10px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+/* Celdas de la tabla */
+.table-cell {
+  padding: 5px;
+  text-align: center;
+}
+
+.titleRender{
+  font-size: 30px;
+  margin-bottom: 2rem;
+}
+
+/* Estilo alternado para las filas */
+.table-row:nth-child(even) {
+  background-color: #f1f1f1;
+}

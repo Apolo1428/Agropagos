@@ -1,0 +1,141 @@
+
+.inicioContainer{
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+      color: #333;
+      overflow:hidden;
+    }
+    .backgroundImage{
+      background-image: url('../laptop.jpg');
+      height: 577px;
+      filter: brightness(50%);
+      display: fixed;
+    }
+  
+    header {
+      color: white;
+      height: 577px;
+      .title-box {
+        position:relative;
+        top: -390px;
+        left: 140px;
+        font-family: "Noto Sans", sans-serif;
+        align-content: center;
+        align-items: center;
+        h1 {
+          color: white;
+          font-size: 60px;
+          margin-bottom: 10px;
+        }
+        p {
+          font-size: 20px;
+        }
+      }
+      
+    }
+    ul {
+        list-style-type: none;
+        padding: 0;
+    }
+  
+    li {
+        margin: 10px 0;
+        padding: 10px;
+        border-radius: 5px;
+    }
+
+    footer {
+        text-align: center;
+        padding: 20px;
+        background-color: #4CAF50;
+        color: white;
+        position: relative;
+        bottom: 0;
+        width: 100%;
+    }
+    section{
+      border-radius: 0px;
+    }
+    .contenedorHorizontal{
+      background-color: #26782E;
+      padding: 50px;
+      display:flex;
+      align-content: center;
+      align-items: center;
+      color: white;
+      h2{
+        min-width: 600px;
+        text-align: center;
+        font-size: 40px;
+        height: 150px; 
+        align-content: center;
+        align-items: center;
+      }
+      p{
+        font-size: 22px;
+        padding: 40px;
+        line-height: 30px;
+      }
+    }
+    .contenedorHorizontal2{
+      background-color: white;
+      padding: 50px;
+      display:flex;
+      align-content: center;
+      align-items: center;
+      color: #26782E;
+      h2{
+        min-width: 600px;
+        text-align: center;
+        font-size: 40px;
+        min-width: calc(50vw - 100px); 
+        height: 150px; 
+        align-content: center;
+        align-items: center;
+      }
+      p{
+        font-size: 22px;
+        padding: 40px;
+        line-height: 30px;
+      }
+    }
+    .contacto {
+      width: 300px;
+      padding: 50px 20px 30px 50px;
+      h2{
+        padding-left: 10px;
+      }
+      h3{
+        padding-bottom:10px;
+      }
+      li{
+        line-height: 20px;
+      }
+      input {
+        width: 380px;
+        padding: 10px;
+        margin-top: 10px;       
+      }
+      button{
+        margin-top: 10px;
+      }
+    }
+    .contactanosMsgBox{
+      color: rgb(0, 176, 26);
+      align-items: center;
+      background-color: #fffa65;
+      align-content: center;
+      align-items: center;
+      width:420px;
+      h2{
+        padding-bottom: 50px;
+        text-align: center;
+        font-size: 40px;
+        height: 150px; 
+        align-content: center;
+        align-items: center;
+      }
+    }
+}
