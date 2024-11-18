@@ -6,7 +6,7 @@ const Inicio = () => {
    
     return (
         <div className='inicioContainer'>
-            <body>
+            <div>
             <header>
                 <div className = "backgroundImage"></div>
                 <div className = "title-box">
@@ -115,7 +115,7 @@ const Inicio = () => {
                 <p>&copy; 2024 Empresa Agropagos. Todos los derechos reservados, nuestro 20 porfi.</p>
             </footer>
 
-            </body>
+            </div>
         </div>
     );
 };

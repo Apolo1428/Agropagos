@@ -5,21 +5,23 @@ import { collection, getDocs, query, where, addDoc } from "firebase/firestore";
 import "../styles/ProgramarPago.css"
 import "../styles/Message-box.css"
 import testSDTAbi from "../abi_tUSDT.json";
-import contractAbi from "../abi_Contract.json";
+import CONTRACT_ABI from "../abi_Contract.json";
+import CONTRACT_BYTECODE from "../bytecode_contract.json";
 import "../styles/Dashboard.css";
-const { ethers } = require("ethers");
 
-const USDT_CONTRACT_ADDRESS = "0xF904556F9c4902e17715d8CeFfe3CbdC86d0dFA8"; 
+const { ethers, JsonRpcProvider } = require("ethers");
+
+const USDT_CONTRACT_ADDRESS = "0xF904556F9c4902e17715d8CeFfe3CbdC86d0dFA8";
+const CONTRACT_ADDRESS = "0xAd9BfF9a883Ac80ea619B110CAbbF9569482324a"
 const USDT_ABI = testSDTAbi;
-const CONCTRACT_ABI = contractAbi;
 
 const ProgramarPago = (props) => {
-  const [connected, setConnected] = useState(null);
+  const [connected, setConnected] = useState();
   const [ethAccount, setEthAccount] = useState(null);
   const [company, setCompany] = useState(null);
-  const [amount, setAmount] = useState(null);
-  const [service, setService] = useState(null);
-
+  const [amount, setAmount] = useState();
+  const [service, setService] = useState();
+  const [status, setStatus] = useState('');
   const connectWallet = async () => {
       if (window.ethereum) {
           try {
@@ -43,28 +45,23 @@ const ProgramarPago = (props) => {
         connectWallet();
   }, []);
   
+
+
   const handleSchedulePayment = async (e) => {
     if (window.ethereum) {
       try {
-        const REACT_APP_CLAVE_PRIVADA = process.env.REACT_APP_CLAVE_PRIVADA;
-
-        alert(REACT_APP_CLAVE_PRIVADA);
-        const provider = new ethers.providers.JsonRpcProvider("https://rpc-amoy.polygon.technology/");
-        const wallet = new ethers.Wallet('5e56e523afd74d81ae87b77031fcafa018d3b30eb4586a60d1e49ca691796834', provider);
-
-          // Solicita conexión a Metamask
-          /*await window.ethereum.request({ method: 'eth_requestAccounts' });
-          const provider = new ethers.BrowserProvider(window.ethereum);
-          const signer = await provider.getSigner();
-          const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-          setEthAccount(accounts[0]);
-          const usdtContract = new ethers.Contract(USDT_CONTRACT_ADDRESS, USDT_ABI, signer);
-          
-          const address = await signer.getAddress();
-          const balanceInWei = await usdtContract.balanceOf(address);
-          const balanceInUSDT = ethers.formatUnits(balanceInWei, 18); // Formato USDT (6 decimales)
-          
-          setBalance(balanceInUSDT);*/
+        const provider = new ethers.BrowserProvider(window.ethereum);
+        const signer = await provider.getSigner();
+        const factory = new ethers.ContractFactory(CONTRACT_ABI, CONTRACT_BYTECODE, signer);
+    
+        try {
+            const contract = await factory.deploy(); // Despliega el contrato
+            setStatus('Desplegando el contrato...');
+            setStatus(`Contrato desplegado en: ${contract.target}`);
+        } catch (error) {
+            console.error(error);
+            setStatus('Error al desplegar el contrato.');
+        }
       } catch (error) {
           alert("Error al conectar con Metamask o al obtener saldo")
           console.error("Error al conectar con Metamask o al obtener saldo:", error);
@@ -74,7 +71,7 @@ const ProgramarPago = (props) => {
     }
   }
 
-  const lista_empresas = ["Agrolmos", "Camposol", "Danper"];
+  const lista_empresas = ["Agrolmos", "Camposol", "Danper", "Drokasa", "Inca Frut", "Louis Dreyfus Peru", "Viru"];
   const setCompany_validate = (a) => {
     if (lista_empresas.includes(a) && a !== props.company) {
       setCompany(a);
@@ -86,11 +83,11 @@ const ProgramarPago = (props) => {
   return (
     <div className = "contenedor">
       <div className = "ProgramarPagos">
-        <div class="message-box">
+        <div className ="message-box">
             PROGRAMAR UN CONTRATO INTELIGENTE
         </div>
         {connected !== null ? (
-          <div class="info-box">
+          <div className ="info-box">
             <div className = 'left'> 
               <input
                 type="text"
@@ -114,13 +111,14 @@ const ProgramarPago = (props) => {
               <br></br>
               <button onClick={handleSchedulePayment}>Programar Pago</button>
             </div>
-            <div class = "vertical"></div>
+            <div className = "vertical"></div>
             <div className = "right">
               <h3>Detalles del contrato</h3>
               <p><b>Empresa contratante:</b> {props.company}</p>
               <p><b>Empresa contratista:</b> {company}</p>
               <p><b>Servicio:</b> {service} </p>
               <p><b>Monto a pagar:</b> {amount} USDT </p>
+              <p><b>Estatus:</b> {status} </p>
             </div>
           </div>
           ) : (

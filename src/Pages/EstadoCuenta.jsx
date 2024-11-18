@@ -86,7 +86,7 @@ function EstadoCuenta(props) {
                         <p className = "address">{USDT_CONTRACT_ADDRESS}</p>
                     </div>
                 </div> 
-                <div class = "vertical"></div>
+                <div className =  "vertical"></div>
                 <div style={{width: "300px"}}> 
                     <h3>Información de billetera </h3>
                     <p className = "greyp">Wallet empleada</p>
@@ -100,7 +100,7 @@ function EstadoCuenta(props) {
                         <p  className = "address">{ethAccount ? `${ethAccount}` : 'Connect Metamask'}</p>
                     </div>
                 </div>
-                <div class = "vertical"></div>
+                <div className =  "vertical"></div>
                 <div style={{width: "300px"}}>
                     <h3>Más detalles</h3>
                     <p className = "greyp">Saldo disponible</p>

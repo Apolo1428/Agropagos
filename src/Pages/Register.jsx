@@ -39,7 +39,7 @@ const Register = () => {
         <div className="register-wrapper">
         <div className="register-container">
             <h2>Registrarse</h2>
-            <form onSubmit={handleSubmit} class ='flex'>
+            <form onSubmit={handleSubmit} className ='flex'>
                 <div style = {{marginRight: "30px"}}>
                     <div>
                         <label>Correo electrónico:</label>
@@ -59,7 +59,18 @@ const Register = () => {
                             onChange={(e) => setCompany(e.target.value)}
                             required 
                             placeholder='Nombre empresa'
+                            autoComplete="off"
+                            list = "listaEmpresas"
                         />
+                        <datalist id="listaEmpresas">
+                            <option value="Agrolmos"/>
+                            <option value="Camposol"/>
+                            <option value="Danper"/>
+                            <option value="Drokasa"/>
+                            <option value="Inca Frut"/>
+                            <option value="Louis Dreyfus Peru"/>
+                            <option value="Viru"/>
+                        </datalist>
                     </div>
                 </div>
                 <div>
@@ -92,7 +103,7 @@ const Register = () => {
                     />
                 </div>
                 <button type="submit">Registrarse</button>
-                <label> ¿Ya tienes cuenta? <span onClick={() => navigate('/Login')} className="link">Inicia Sesión</span></label>
+                <label>¿Ya tienes cuenta? <span onClick={() => navigate('/Login')} className="link">Inicia Sesión</span></label>
                 </div>
             </form>
 
