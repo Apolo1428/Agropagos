@@ -3,6 +3,7 @@ import { ethers } from "ethers";
 import { db } from '../firebase'; 
 import { query, updateDoc, collection, getDocs, where, doc } from "firebase/firestore";
 import CONTRACT_ABI from "../abi_Contract.json";
+import USDT_ABI from '../abi_tUSDT.json';
 
 const EstadoPagos = () => {
     const [pagosProgramados, setPagosProgramados] = useState([]);
@@ -101,7 +102,8 @@ const EstadoPagos = () => {
             await window.ethereum.request({ method: 'eth_requestAccounts' });
             const provider = new ethers.BrowserProvider(window.ethereum);
             signer = await provider.getSigner();
-            const contract = new ethers.Contract(addressContract, CONTRACT_ABI, signer);
+            
+            let contract = new ethers.Contract(addressContract, CONTRACT_ABI, signer);
             await contract.marcarServicioCompletado();
 
             const pagoRef = doc(db, "PagosProgramados", id);
@@ -114,14 +116,16 @@ const EstadoPagos = () => {
         }
         
     }
-    const pagarContrato = async (addressContract, addressContractor, id) => {
+
+    const pagarContrato = async (addressContract, addressContractor, amount, id) => {
+        console.log(addressContract,addressContractor);
+        await window.ethereum.request({ method: 'eth_requestAccounts' });
+        const provider = new ethers.BrowserProvider(window.ethereum);
+        signer = await provider.getSigner();
         try{
-            console.log(addressContract,addressContractor);
-            await window.ethereum.request({ method: 'eth_requestAccounts' });
-            const provider = new ethers.BrowserProvider(window.ethereum);
-            signer = await provider.getSigner();
+            //Contrato
             const contract = new ethers.Contract(addressContract, CONTRACT_ABI, signer);
-            await contract.ejecutarPago();
+            await contract.connect(signer).ejecutarPago();
             console.log("Funciona");
 
             const pagoRef = doc(db, "PagosProgramados", id);
@@ -129,10 +133,24 @@ const EstadoPagos = () => {
                 status: "completado"
             });
         }catch (error) {
-            console.error(error);
-            alert("Error, marque otra vez o reinicie.");
+            if (error.reason === 'El contrato no tiene allowance suficiente'){
+                await reservarUSDT(addressContract,signer,amount);
+                console.log(10);
+              //  pagarContrato(addressContract, addressContractor, amount, id);
+            }
+            
         }
         
+    }
+    const reservarUSDT = async (addressContract, signer, amount) => {
+        let hecho = false;
+
+            const USDT_CONTRACT_ADDRESS = "0xF904556F9c4902e17715d8CeFfe3CbdC86d0dFA8";
+            let usdtToken = new ethers.Contract(USDT_CONTRACT_ADDRESS, USDT_ABI, signer);
+            await usdtToken.approve(addressContract, ethers.parseUnits(amount,18));
+            hecho = true;
+            console.log("hola");
+
     }
     useEffect(() => {
         const fetchData = async () => {
@@ -160,7 +178,7 @@ const EstadoPagos = () => {
                 <div className="table-header">
                     <div className="table-cell">Empresa</div>
                     <div className="table-cell">Servicio</div>
-                    <div className="table-cell">Monto</div>
+                    <div className="table-cell">Monto (USDT)</div>
                     <div className="table-cell">Estado</div>
                     <div className="table-cell">Gestión</div>
                     <div className="table-cell">Pagar</div>
@@ -181,7 +199,7 @@ const EstadoPagos = () => {
                             </div>
                             <div className="table-cell">
                                 {pago.status !== "completado" && (
-                                    <button onClick={() => pagarContrato(pago.addressContract, pago.addressContractor, pago.id)}>
+                                    <button onClick={() => pagarContrato(pago.addressContract, pago.addressContractor, pago.amount, pago.id)}>
                                         Pagar
                                     </button>
                                 )}
