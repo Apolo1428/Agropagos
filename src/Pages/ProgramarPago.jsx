@@ -4,23 +4,22 @@ import { db } from '../firebase';
 import { collection, getDocs, query, where, addDoc } from "firebase/firestore";
 import "../styles/ProgramarPago.css"
 import "../styles/Message-box.css"
-import testSDTAbi from "../abi_tUSDT.json";
+//import testSDTAbi from "../abi_tUSDT.json";
 import CONTRACT_ABI from "../abi_Contract.json";
 import CONTRACT_BYTECODE from "../bytecode_contract.json";
+
 import "../styles/Dashboard.css";
+import { Contract } from 'ethers';
 
-const { ethers, JsonRpcProvider } = require("ethers");
+const { ethers } = require("ethers");
 
-const USDT_CONTRACT_ADDRESS = "0xF904556F9c4902e17715d8CeFfe3CbdC86d0dFA8";
-const CONTRACT_ADDRESS = "0xAd9BfF9a883Ac80ea619B110CAbbF9569482324a"
-const USDT_ABI = testSDTAbi;
+//const USDT_ABI = testSDTAbi;
 
 const ProgramarPago = (props) => {
   const [connected, setConnected] = useState();
-  const [ethAccount, setEthAccount] = useState(null);
-  const [company, setCompany] = useState(null);
-  const [amount, setAmount] = useState();
-  const [service, setService] = useState();
+  const [company, setCompany] = useState('');
+  const [amount, setAmount] = useState('');
+  const [service, setService] = useState('');
   const [status, setStatus] = useState('');
   const connectWallet = async () => {
       if (window.ethereum) {
@@ -29,7 +28,9 @@ const ProgramarPago = (props) => {
               await window.ethereum.request({ method: 'eth_requestAccounts' });
               const provider = new ethers.BrowserProvider(window.ethereum);
               const signer = await provider.getSigner();
-              const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+              if (signer === null) {
+                return;
+              }
               setConnected(true);
               
           } catch (error) {
@@ -45,23 +46,66 @@ const ProgramarPago = (props) => {
         connectWallet();
   }, []);
   
+  const obtenerDireccion = async (nombre) => {
+    const q = query(collection(db, "Empresas"), 
+    where("Nombre", "==", nombre))
+    const querySnapshot = await getDocs(q);
+    if (!querySnapshot.empty) {
+        const compDoc = querySnapshot.docs[0]; // Primer documento encontrado
+        const compData = compDoc.data(); // Acceder a los datos del documento
+        return compData.WalletMetaMask;
+    } else {
+        alert('Nombre compañía incorrecto');
+        return null;
+    }
+  }
 
-
-  const handleSchedulePayment = async (e) => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     if (window.ethereum) {
       try {
+        // Solo se despliega en la red actual de la wallet
+        await window.ethereum.request({ method: 'eth_requestAccounts' });
         const provider = new ethers.BrowserProvider(window.ethereum);
         const signer = await provider.getSigner();
+        const USDT_CONTRACT_ADDRESS = '0xF904556F9c4902e17715d8CeFfe3CbdC86d0dFA8'; 
+        //para verificar datos
+        const CONTRACTED_ADDRESS = await obtenerDireccion(company);
+        if (CONTRACTED_ADDRESS === null) {
+          return; 
+        }
+        const CONTRACT_AMOUNT = ethers.parseUnits(amount, 18);
+
+        //base de datos
+        
+        // Crea el contrato
         const factory = new ethers.ContractFactory(CONTRACT_ABI, CONTRACT_BYTECODE, signer);
-    
         try {
-            const contract = await factory.deploy(); // Despliega el contrato
+            const contract = await factory.deploy(); // Desplegar el contrato
+            await contract.configurarContrato(
+              service,
+              CONTRACT_AMOUNT,
+              CONTRACTED_ADDRESS,
+              USDT_CONTRACT_ADDRESS
+            );
             setStatus('Desplegando el contrato...');
             setStatus(`Contrato desplegado en: ${contract.target}`);
+            await addDoc(collection(db, "PagosProgramados"), {
+              addressContract: contract.target,
+              addressContractor: signer.address,
+              addressContracted: CONTRACTED_ADDRESS
+            });
         } catch (error) {
             console.error(error);
             setStatus('Error al desplegar el contrato.');
         }
+       // Configurar contrato
+       // let contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
+        //console.log (await contract.servicioCompletado());
+
+       
+        //console.log(await contract.contratoConfigurado());
+        
       } catch (error) {
           alert("Error al conectar con Metamask o al obtener saldo")
           console.error("Error al conectar con Metamask o al obtener saldo:", error);
@@ -88,17 +132,19 @@ const ProgramarPago = (props) => {
         </div>
         {connected !== null ? (
           <div className ="info-box">
-            <div className = 'left'> 
+            <form className = 'left' onSubmit = {handleSubmit}> 
               <input
                 type="text"
                 placeholder="Nombre de la Empresa"
                 onChange={(e) => setCompany_validate(e.target.value)}
+                required
               />
               <br></br>
               <input
                 type="text"
                 placeholder="Servicio a Realizar"
                 value={service}
+                required
                 onChange={(e) => setService(e.target.value)}
               />
               <br></br>
@@ -107,10 +153,11 @@ const ProgramarPago = (props) => {
                 placeholder="Monto a Pagar (USDT)"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
+                required
               />
               <br></br>
-              <button onClick={handleSchedulePayment}>Programar Pago</button>
-            </div>
+              <button type="submit">Programar Pago</button>
+            </form>
             <div className = "vertical"></div>
             <div className = "right">
               <h3>Detalles del contrato</h3>

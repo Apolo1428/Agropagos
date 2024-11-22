@@ -1,12 +1,6 @@
 
 .inicioContainer{
-    body {
-      margin: 0;
-      padding: 0;
-      background-color: #f4f4f4;
-      color: #333;
-      overflow:hidden;
-    }
+    overflow-x: hidden;
     .backgroundImage{
       background-image: url('../laptop.jpg');
       height: 577px;
@@ -53,7 +47,6 @@
         color: white;
         position: relative;
         bottom: 0;
-        width: 100%;
     }
     section{
       border-radius: 0px;
@@ -66,7 +59,7 @@
       align-items: center;
       color: white;
       h2{
-        min-width: 600px;
+        min-width: 50%;
         text-align: center;
         font-size: 40px;
         height: 150px; 
