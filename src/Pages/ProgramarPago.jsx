@@ -86,14 +86,19 @@ const ProgramarPago = (props) => {
               service,
               CONTRACT_AMOUNT,
               CONTRACTED_ADDRESS,
-              USDT_CONTRACT_ADDRESS
+              USDT_CONTRACT_ADDRESS,
+              {gasLimit: 100000}
             );
             setStatus('Desplegando el contrato...');
             setStatus(`Contrato desplegado en: ${contract.target}`);
             await addDoc(collection(db, "PagosProgramados"), {
               addressContract: contract.target,
               addressContractor: signer.address,
-              addressContracted: CONTRACTED_ADDRESS
+              addressContracted: CONTRACTED_ADDRESS,
+              amount: amount,
+              company: company,
+              service: service,
+              status: 'pendiente',
             });
         } catch (error) {
             console.error(error);

@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "C:\\Users\\cgcab\\yo\\ProyectosBlockChain\\AgroPagos\\contracts\\ContratoServicioAgropagos.sol": {
-      "lastModificationDate": 1731713335199,
-      "contentHash": "af194fd7618ccc2d0921c2c45b14fca4",
+      "lastModificationDate": 1732320037348,
+      "contentHash": "7b2092efff2a23deb09215af4a368c3f",
       "sourceName": "contracts/ContratoServicioAgropagos.sol",
       "solcConfig": {
         "version": "0.8.27",

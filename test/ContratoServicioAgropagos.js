@@ -23,7 +23,6 @@ describe("ContratoServicioAgropagos", function () {
         )
         // Transferir USDT al contratista y aprobar el contrato
         await usdtToken.connect(owner).approve(contratoServicio.target, pago); // aprobar 1000 USDT para usar en el contrato.
-        console.log("address: ", usdtToken.target);
     });
 
     it("debería ejecutar el pago al completar el servicio", async function () {
