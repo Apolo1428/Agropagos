@@ -341,6 +341,46 @@
       "artifacts": [
         "TestUSDT"
       ]
+    },
+    "C:\\Users\\cgcab\\yo\\ProyectosBlockChain\\AgroPagos\\contracts\\ContratoServicioSimple.sol": {
+      "lastModificationDate": 1732590917480,
+      "contentHash": "a55194774407acb2032db7b01fa4ac65",
+      "sourceName": "contracts/ContratoServicioSimple.sol",
+      "solcConfig": {
+        "version": "0.8.27",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/access/Ownable.sol",
+        "@openzeppelin/contracts/token/ERC20/ERC20.sol",
+        "hardhat/console.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.27"
+      ],
+      "artifacts": [
+        "ContratoServicioSimple"
+      ]
     }
   }
 }

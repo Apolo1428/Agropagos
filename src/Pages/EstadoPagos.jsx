@@ -96,15 +96,17 @@ const EstadoPagos = () => {
       }
     };
 */
-    const marcarCompletado = async (addressContract, addressContractor, id) => {
+    const marcarCompletado = async (addressContract, amount, id) => {
         try {
-            console.log(addressContract,addressContractor);
             await window.ethereum.request({ method: 'eth_requestAccounts' });
             const provider = new ethers.BrowserProvider(window.ethereum);
             signer = await provider.getSigner();
             
-            let contract = new ethers.Contract(addressContract, CONTRACT_ABI, signer);
-            await contract.marcarServicioCompletado();
+            
+            const USDT_CONTRACT_ADDRESS = "0xF904556F9c4902e17715d8CeFfe3CbdC86d0dFA8";
+            let usdtToken = new ethers.Contract(USDT_CONTRACT_ADDRESS, USDT_ABI, signer);
+            await usdtToken.approve(addressContract, ethers.parseUnits(amount,18));
+            console.log("Reservado");
 
             const pagoRef = doc(db, "PagosProgramados", id);
             await updateDoc(pagoRef, {
@@ -117,7 +119,7 @@ const EstadoPagos = () => {
         
     }
 
-    const pagarContrato = async (addressContract, addressContractor, amount, id) => {
+    const pagarContrato = async (addressContract, addressContractor, id) => {
         console.log(addressContract,addressContractor);
         await window.ethereum.request({ method: 'eth_requestAccounts' });
         const provider = new ethers.BrowserProvider(window.ethereum);
@@ -133,25 +135,12 @@ const EstadoPagos = () => {
                 status: "completado"
             });
         }catch (error) {
-            if (error.reason === 'El contrato no tiene allowance suficiente'){
-                await reservarUSDT(addressContract,signer,amount);
-                console.log(10);
-              //  pagarContrato(addressContract, addressContractor, amount, id);
-            }
+            console.error(error);
             
         }
         
     }
-    const reservarUSDT = async (addressContract, signer, amount) => {
-        let hecho = false;
 
-            const USDT_CONTRACT_ADDRESS = "0xF904556F9c4902e17715d8CeFfe3CbdC86d0dFA8";
-            let usdtToken = new ethers.Contract(USDT_CONTRACT_ADDRESS, USDT_ABI, signer);
-            await usdtToken.approve(addressContract, ethers.parseUnits(amount,18));
-            hecho = true;
-            console.log("hola");
-
-    }
     useEffect(() => {
         const fetchData = async () => {
             await window.ethereum.request({ method: 'eth_requestAccounts' });
@@ -192,14 +181,14 @@ const EstadoPagos = () => {
                             <div className="table-cell">{pago.status}</div>
                             <div className="table-cell">
                                 {pago.status === "pendiente" && (
-                                    <button onClick={() => marcarCompletado(pago.addressContract, pago.addressContractor, pago.id)}>
+                                    <button onClick={() => marcarCompletado(pago.addressContract, pago.amount, pago.id)}>
                                         Marcar Completado
                                     </button>
                                 )}
                             </div>
                             <div className="table-cell">
                                 {pago.status !== "completado" && (
-                                    <button onClick={() => pagarContrato(pago.addressContract, pago.addressContractor, pago.amount, pago.id)}>
+                                    <button onClick={() => pagarContrato(pago.addressContract, pago.addressContractor, pago.id)}>
                                         Pagar
                                     </button>
                                 )}

@@ -81,13 +81,10 @@ const ProgramarPago = (props) => {
         // Crea el contrato
         const factory = new ethers.ContractFactory(CONTRACT_ABI, CONTRACT_BYTECODE, signer);
         try {
-            const contract = await factory.deploy(); // Desplegar el contrato
-            await contract.configurarContrato(
-              service,
+            const contract = await factory.deploy(
               CONTRACT_AMOUNT,
               CONTRACTED_ADDRESS,
               USDT_CONTRACT_ADDRESS,
-              {gasLimit: 100000}
             );
             setStatus('Desplegando el contrato...');
             setStatus(`Contrato desplegado en: ${contract.target}`);
@@ -104,13 +101,7 @@ const ProgramarPago = (props) => {
             console.error(error);
             setStatus('Error al desplegar el contrato.');
         }
-       // Configurar contrato
-       // let contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
-        //console.log (await contract.servicioCompletado());
 
-       
-        //console.log(await contract.contratoConfigurado());
-        
       } catch (error) {
           alert("Error al conectar con Metamask o al obtener saldo")
           console.error("Error al conectar con Metamask o al obtener saldo:", error);
