@@ -26,7 +26,7 @@ function EstadoCuenta(props) {
                 
                 const address = await signer.getAddress();
                 const balanceInWei = await usdtContract.balanceOf(address);
-                const balanceInUSDT = ethers.formatUnits(balanceInWei, 18); // Formato USDT (6 decimales)
+                const balanceInUSDT = ethers.formatUnits(balanceInWei, 18); 
                 
                 setBalance(balanceInUSDT);
             } catch (error) {

@@ -8,7 +8,7 @@ const Inicio = () => {
         <div className='inicioContainer'>
             <div>
             <header>
-                <div className = "backgroundImage"></div>
+                <div className = "backgroundImage" width = '100vw'></div>
                 <div className = "title-box">
                     <h1>Agropagos</h1>
                     <p>Agropagos es la solución blockchain <br></br>para pagos inteligentes interempresariales.</p>
